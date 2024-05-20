@@ -1,25 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-
-interface IssuanceInfo {
-	isLogin: string,
-	userName: string,
-	result: IssuanceHistory[],
-}
-
-interface IssuanceHistory {
-	date: string,
-	cardList: CardInfo[],
-}
-
-interface CardInfo {
-	cardName: string,
-	rpc: string, //응답코드
-	ingbCode: string,
-	imgPath: string,
-	status: string,
-}
-
+import type { CardInfo, IssuanceHistory, IssuanceInfo } from './constant';
 
 const issuanceInfo: IssuanceInfo = {
 	isLogin: 'Y',
