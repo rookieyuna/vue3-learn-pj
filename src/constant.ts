@@ -7,6 +7,8 @@ export interface IssuanceInfo {
 export interface IssuanceHistory {
 	date: string;
 	cardList: CardInfo[];
+	grouped?: Record<string, CardInfo[]>;
+	statusKeys?: string[];
 }
 
 export interface CardInfo {
@@ -16,3 +18,7 @@ export interface CardInfo {
 	imgPath: string;
 	status: string;
 }
+
+// export interface NewList {
+// 	[key: string]: CardInfo[];
+// }

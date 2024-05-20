@@ -54,6 +54,7 @@ const issuanceInfo: IssuanceInfo = {
 	],
 };
 
+
 const HistoryList = ref<IssuanceHistory[]>([]);
 
 onMounted(() => {
@@ -67,12 +68,23 @@ function 카드정보세팅() {
 
 	HistoryList.value = issuanceInfo.result;
 	if (HistoryList.value.length > 0) {
-
+		const _statusKeys: string[] = []
+		
 		HistoryList.value.forEach((history, idx) => {
+			const grouped: Record<string, CardInfo[]> = {};
 			history.cardList.forEach((card, idx2)=>{
 				card.status = 카드상태세팅(card) || ''
+				
+				if (!grouped[card.status]) {
+					grouped[card.status] = [];
+					_statusKeys.push(card.status)
+				}
+				grouped[card.status].push(card);
 			});
 			
+			history.grouped = grouped
+			history.statusKeys = _statusKeys
+			console.log('>>history', history)
 		});
 	}
 	console.log('HistoryList', HistoryList)
@@ -85,6 +97,8 @@ function 카드상태세팅(card: CardInfo) {
 		return '배송'
 	}
 }
+
+const 상태값 = ['신청', '배송']
 </script>
 
 <template>
@@ -92,15 +106,15 @@ function 카드상태세팅(card: CardInfo) {
 		<h2>카드목록만들기</h2>
 		<div v-for="(history, idx) in HistoryList" :key="idx">
 			<h3>날짜: {{ history.date }}</h3>
-			<div v-for="(card, idx2) in history.cardList" :key="idx2">
-				<h4>배송상태: {{ card.status }}</h4>
+			<div v-for="(status, idx2) in history.statusKeys" :key="idx2">
+				<h4>배송상태: {{ status }}</h4>
 				<table border="1" width="400px">
 					<thead>
 						<th>카드명</th>
 						<th>배송상태</th>
 						<th>기타</th>
 					</thead>
-					<tr>
+					<tr v-for="(card, idx3) in history.grouped[status]">
 						<td>{{ card.cardName }}</td>
 						<td>{{ card.status }}</td>
 						<td>{{ card.imgPath }}</td>
