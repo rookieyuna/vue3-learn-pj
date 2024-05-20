@@ -68,10 +68,11 @@ function 카드정보세팅() {
 
 	HistoryList.value = issuanceInfo.result;
 	if (HistoryList.value.length > 0) {
-		const _statusKeys: string[] = []
+		
 		
 		HistoryList.value.forEach((history, idx) => {
 			const grouped: Record<string, CardInfo[]> = {};
+			const _statusKeys: string[] = []
 			history.cardList.forEach((card, idx2)=>{
 				card.status = 카드상태세팅(card) || ''
 				
@@ -81,13 +82,14 @@ function 카드정보세팅() {
 				}
 				grouped[card.status].push(card);
 			});
-			
+
 			history.grouped = grouped
 			history.statusKeys = _statusKeys
-			console.log('>>history', history)
+			console.log('history.statusKeys>>', history.statusKeys)
+			console.log('history>>', history)
 		});
 	}
-	console.log('HistoryList', HistoryList)
+
 }
 
 function 카드상태세팅(card: CardInfo) {
@@ -97,8 +99,6 @@ function 카드상태세팅(card: CardInfo) {
 		return '배송'
 	}
 }
-
-const 상태값 = ['신청', '배송']
 </script>
 
 <template>
